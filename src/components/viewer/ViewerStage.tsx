@@ -48,14 +48,14 @@ function UnavailableBlock({ project }: { project: Project }) {
 }
 
 export function ViewerStage({ project, device, reloadKey }: ViewerStageProps) {
-  const [iframeFailed, setIframeFailed] = useState(false);
+  const [failure, setFailure] = useState<{ reloadKey: number } | null>(null);
+  const iframeFailed = failure?.reloadKey === reloadKey;
 
   useEffect(() => {
-    setIframeFailed(false);
     if (project.previewMode !== "iframe") return;
 
     const timer = setTimeout(() => {
-      setIframeFailed(true);
+      setFailure({ reloadKey });
     }, IFRAME_TIMEOUT_MS);
 
     return () => clearTimeout(timer);
@@ -74,7 +74,7 @@ export function ViewerStage({ project, device, reloadKey }: ViewerStageProps) {
           referrerPolicy="strict-origin-when-cross-origin"
           allow="fullscreen"
           className="h-full w-full border-0"
-          onError={() => setIframeFailed(true)}
+          onError={() => setFailure({ reloadKey })}
         />
       </div>
     );
