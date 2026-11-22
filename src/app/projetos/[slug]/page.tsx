@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { projects } from "@/data/projects";
 import { StatusBadge } from "@/components/projects/StatusBadge";
 import { WhatsAppCTA } from "@/components/ui/WhatsAppCTA";
+import { ProjectDemoButton } from "@/components/viewer/ProjectDemoButton";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
@@ -100,14 +101,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       )}
 
       <div className="flex flex-wrap gap-4">
-        {isLive && (
-          <button
-            type="button"
-            className="rounded-full border border-(--color-border) px-5 py-3 text-sm font-semibold transition hover:border-(--color-accent)"
-          >
-            Ver demonstração
-          </button>
-        )}
+        {isLive && <ProjectDemoButton project={project} />}
         {project.liveUrl && (
           <a
             href={project.liveUrl}
