@@ -15,12 +15,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://catalogo.onzemil.company"),
   title: {
     default: "Projetos — ONZEMIL Company",
     template: "%s — ONZEMIL Company",
   },
   description:
     "Catálogo de projetos da ONZEMIL Company — explore sites e sistemas em uma experiência interativa.",
+  openGraph: {
+    images: ["/images/brand/orbit-static.png"],
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
