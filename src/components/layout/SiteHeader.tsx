@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { BrandMark } from "@/components/ui/BrandMark";
-import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { WhatsAppCTA } from "@/components/ui/WhatsAppCTA";
 
 export function SiteHeader() {
   return (
@@ -15,14 +15,12 @@ export function SiteHeader() {
             </small>
           </span>
         </Link>
-        <a
-          href={buildWhatsAppUrl(undefined, "general-budget")}
-          target="_blank"
-          rel="noopener noreferrer"
+        <WhatsAppCTA
+          intent="general-budget"
           className="rounded-full border border-(--color-border) px-4 py-3 text-sm transition hover:border-(--color-accent)"
         >
           Iniciar um projeto ↗
-        </a>
+        </WhatsAppCTA>
       </div>
     </header>
   );

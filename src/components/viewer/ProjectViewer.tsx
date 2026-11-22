@@ -37,7 +37,7 @@ export function ProjectViewer({ project, open, onClose }: ProjectViewerProps) {
       if (event.key === "Tab" && overlayRef.current) {
         const focusable = Array.from(
           overlayRef.current.querySelectorAll<HTMLElement>(
-            "a[href], button:not([disabled])",
+            "a[href], button:not([disabled]), iframe",
           ),
         ).filter((el) => el.offsetParent !== null);
         if (focusable.length === 0) return;

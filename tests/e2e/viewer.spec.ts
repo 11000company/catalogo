@@ -51,3 +51,22 @@ test("iframe that loads successfully stays visible past the timeout window", asy
   await expect(iframe).toHaveCount(1);
   await expect(page.getByRole("dialog").getByText(/não foi possível carregar/i)).toHaveCount(0);
 });
+
+test("Tab from the last control reaches the embedded iframe before wrapping", async ({
+  page,
+}) => {
+  await page.route("**/aurorahospedagens.com/**", (route) =>
+    route.fulfill({ contentType: "text/html", body: "<html><body>AURORA OK</body></html>" }),
+  );
+  await page.goto("/projetos/aurora-hospedagens");
+  await page.getByRole("button", { name: /ver demonstração/i }).click();
+  const iframe = page.locator("iframe");
+  await expect(iframe).toHaveCount(1);
+
+  const whatsappCta = page
+    .getByRole("dialog")
+    .getByRole("link", { name: /quero um projeto parecido/i });
+  await whatsappCta.focus();
+  await page.keyboard.press("Tab");
+  await expect(iframe).toBeFocused();
+});
