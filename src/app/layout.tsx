@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
+import { getSiteUrl, isSiteUrlConfigured } from "@/lib/site-config";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://catalogo.onzemil.company"),
+  metadataBase: new URL(getSiteUrl()),
   title: {
     default: "Projetos — ONZEMIL Company",
     template: "%s — ONZEMIL Company",
@@ -25,6 +26,9 @@ export const metadata: Metadata = {
   openGraph: {
     images: ["/images/brand/orbit-static.png"],
   },
+  robots: isSiteUrlConfigured()
+    ? undefined
+    : { index: false, follow: false },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
