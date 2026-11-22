@@ -32,12 +32,21 @@ export const projects: Project[] = [
     description:
       "Plataforma digital para apresentação de hospedagens premium em João Pessoa-PB.",
     longDescription:
-      "Site institucional para a Aurora Hospedagens, com apresentação de unidades e serviços relacionados à experiência do hóspede em João Pessoa-PB.",
+      "Site institucional para a Aurora Hospedagens, com busca de disponibilidade e reservas, além de seções para mercado interno, passeios e serviços complementares à experiência do hóspede em João Pessoa-PB.",
     status: "published",
     statusLabel: "Publicado",
     technologies: [],
-    features: [],
-    gallery: [],
+    features: [
+      "Busca de disponibilidade com check-in, check-out e número de hóspedes",
+      "Conta de usuário (login)",
+      "Seções de mercado (\"Aurora Mercado\"), passeios e serviços",
+      "Contato direto por WhatsApp",
+    ],
+    image: "/images/projects/aurora-hospedagens/cover.webp",
+    gallery: [
+      "/images/projects/aurora-hospedagens/cover.webp",
+      "/images/projects/aurora-hospedagens/mobile.webp",
+    ],
     liveUrl: "https://www.aurorahospedagens.com/",
     previewMode: "iframe",
     featured: true,
