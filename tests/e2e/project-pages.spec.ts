@@ -1,0 +1,38 @@
+import { test, expect } from "@playwright/test";
+
+test("each project detail page loads with correct title, not duplicated", async ({
+  page,
+}) => {
+  await page.goto("/projetos/aurora-hospedagens");
+  await expect(page).toHaveTitle("Aurora Hospedagens — ONZEMIL Company");
+});
+
+test("project page with an image uses it as the og:image", async ({ page }) => {
+  await page.goto("/projetos/aurora-hospedagens");
+  const ogImage = page.locator('meta[property="og:image"]');
+  await expect(ogImage).toHaveAttribute("content", /aurora-hospedagens\/cover\.webp/);
+});
+
+test("project page without an image falls back to the brand og:image", async ({
+  page,
+}) => {
+  await page.goto("/projetos/havoc");
+  const ogImage = page.locator('meta[property="og:image"]');
+  await expect(ogImage).toHaveAttribute("content", /orbit-static\.png/);
+});
+
+test("development-status project page has no live-preview button", async ({ page }) => {
+  await page.goto("/projetos/havoc");
+  await expect(page.getByRole("button", { name: /ver demonstração/i })).toHaveCount(0);
+});
+
+test("unknown slug renders 404", async ({ page }) => {
+  const response = await page.goto("/projetos/does-not-exist");
+  expect(response?.status()).toBe(404);
+});
+
+test("similar-project CTA includes project title", async ({ page }) => {
+  await page.goto("/projetos/aurora-hospedagens");
+  const link = page.getByRole("link", { name: /quero um projeto parecido/i });
+  await expect(link).toHaveAttribute("href", /Aurora%20Hospedagens/);
+});
