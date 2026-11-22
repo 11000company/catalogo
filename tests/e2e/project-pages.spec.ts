@@ -1,8 +1,24 @@
 import { test, expect } from "@playwright/test";
 
-test("each project detail page loads with correct title", async ({ page }) => {
+test("each project detail page loads with correct title, not duplicated", async ({
+  page,
+}) => {
   await page.goto("/projetos/aurora-hospedagens");
-  await expect(page).toHaveTitle(/Aurora Hospedagens/);
+  await expect(page).toHaveTitle("Aurora Hospedagens — ONZEMIL Company");
+});
+
+test("project page with an image uses it as the og:image", async ({ page }) => {
+  await page.goto("/projetos/aurora-hospedagens");
+  const ogImage = page.locator('meta[property="og:image"]');
+  await expect(ogImage).toHaveAttribute("content", /aurora-hospedagens\/cover\.webp/);
+});
+
+test("project page without an image falls back to the brand og:image", async ({
+  page,
+}) => {
+  await page.goto("/projetos/havoc");
+  const ogImage = page.locator('meta[property="og:image"]');
+  await expect(ogImage).toHaveAttribute("content", /orbit-static\.png/);
 });
 
 test("development-status project page has no live-preview button", async ({ page }) => {

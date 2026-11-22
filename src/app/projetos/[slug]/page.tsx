@@ -22,12 +22,14 @@ export async function generateMetadata({
   const project = projects.find((p) => p.slug === slug);
   if (!project) return {};
   return {
-    title: `${project.title} — ONZEMIL Company`,
+    title: project.title,
     description: project.description,
     openGraph: {
       title: project.title,
       description: project.description,
-      images: project.image ? [project.image] : undefined,
+      images: [project.image ?? "/images/brand/orbit-static.png"],
+      url: `/projetos/${project.slug}`,
+      type: "website",
     },
   };
 }

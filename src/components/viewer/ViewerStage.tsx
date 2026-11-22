@@ -20,7 +20,14 @@ const DEVICE_WIDTH: Record<DeviceSize, string> = {
   mobile: "min(390px, 100%)",
 };
 
-function UnavailableBlock({ project }: { project: Project }) {
+function UnavailableBlock({ project, failed }: { project: Project; failed: boolean }) {
+  const message =
+    failed && project.liveUrl
+      ? "Não foi possível carregar a prévia deste projeto no catálogo. Você pode visitar o site público pelo botão abaixo."
+      : project.liveUrl
+        ? "Prévia embutida não disponível para este projeto."
+        : "A demonstração pública deste projeto ainda não foi configurada.";
+
   return (
     <div className="flex h-full min-h-[380px] flex-col items-center justify-center p-8 text-center">
       <div className="mb-4 text-[11px] tracking-[0.18em] text-(--color-text-dim) uppercase">
@@ -30,8 +37,7 @@ function UnavailableBlock({ project }: { project: Project }) {
         {project.title}
       </strong>
       <p className="mb-6 max-w-md text-sm leading-relaxed text-(--color-text-dim)">
-        Não foi possível carregar a prévia deste projeto no catálogo. Você pode
-        visitar o site público pelo botão abaixo.
+        {message}
       </p>
       {project.liveUrl && (
         <a
@@ -49,7 +55,8 @@ function UnavailableBlock({ project }: { project: Project }) {
 
 export function ViewerStage({ project, device, reloadKey }: ViewerStageProps) {
   const [failure, setFailure] = useState<{ reloadKey: number } | null>(null);
-  const iframeFailed = failure?.reloadKey === reloadKey;
+  const [loaded, setLoaded] = useState<{ reloadKey: number } | null>(null);
+  const iframeFailed = failure?.reloadKey === reloadKey && loaded?.reloadKey !== reloadKey;
 
   useEffect(() => {
     if (project.previewMode !== "iframe") return;
@@ -74,6 +81,7 @@ export function ViewerStage({ project, device, reloadKey }: ViewerStageProps) {
           referrerPolicy="strict-origin-when-cross-origin"
           allow="fullscreen"
           className="h-full w-full border-0"
+          onLoad={() => setLoaded({ reloadKey })}
           onError={() => setFailure({ reloadKey })}
         />
       </div>
@@ -92,5 +100,6 @@ export function ViewerStage({ project, device, reloadKey }: ViewerStageProps) {
     );
   }
 
-  return <UnavailableBlock project={project} />;
+  const failed = project.previewMode === "iframe" && iframeFailed;
+  return <UnavailableBlock project={project} failed={failed} />;
 }
