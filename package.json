@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "serve out -p 4173",
     "lint": "eslint",
     "test": "vitest run"
   },
